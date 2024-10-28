@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Settings</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>User Settings</h1>
+    </header>
+    <div class="container">
+        <form id="settingsForm">
+            <div class="form-group">
+                <label for="theme">Theme:</label>
+                <select id="theme" name="theme">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="notificationPreferences">Notification Preferences:</label>
+                <select id="notificationPreferences" name="notificationPreferences">
+                    <option value="email">Email</option>
+                    <option value="sms">SMS</option>
+                    <option value="push">Push Notification</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="taskView">Task View:</label>
+                <select id="taskView" name="taskView">
+                    <option value="list">List</option>
+                    <option value="board">Board</option>
+                </select>
+            </div>
+            <button type="submit">Save Settings</button>
+        </form>
+    </div>
+    <script src="/js/main.js"></script>
+</body>
+</html>
