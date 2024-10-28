@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.ns","dom", "esnext"],
+    "types": ["./types"],
+    "strict": true
+  },
+  "importMap": "./import_map.json",
+  "tasks": {
+    "start": "deno run --allow-net --allow-env app.ts",
+    "test": "deno test --allow-net --allow-env app.ts"
+  }
+}

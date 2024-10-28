@@ -1,0 +1,81 @@
+import { Context } from 'https://deno.land/x/oak/mod.ts';
+import GoalService from '../services/GoalService.ts';
+
+class GoalController {
+  static async createGoal(context: Context) {
+    try {
+      const body = await context.request.body().value;
+      const goal = await GoalService.createGoal(body);
+      context.response.status = 201;
+      context.response.body = goal;
+    } catch (error) {
+      context.response.status = 500;
+      context.response.body = { error: error.message };
+    }
+  }
+
+  static async getGoals(context: Context) {
+    try {
+      const goals = await GoalService.getGoals();
+      context.response.status = 200;
+      context.response.body = goals;
+    } catch (error) {
+      context.response.status = 500;
+      context.response.body = { error: error.message };
+    }
+  }
+
+  static async getGoalById(context: Context) {
+    try {
+      const { id } = context.params;
+      const goal = await GoalService.getGoalById(id);
+      if (!goal) {
+        context.response.status = 404;
+        context.response.body = { error: 'Goal not found' };
+        return;
+      }
+      context.response.status = 200;
+      context.response.body = goal;
+    } catch (error) {
+      context.response.status = 500;
+      context.response.body = { error: error.message };
+    }
+  }
+
+  static async updateGoal(context: Context) {
+    try {
+      const { id } = context.params;
+      const body = await context.request.body().value;
+      const goal = await GoalService.updateGoal(id, body);
+      if (!goal) {
+        context.response.status = 404;
+        context.response.body = { error: 'Goal not found' };
+        return;
+      }
+      context.response.status = 200;
+      context.response.body = goal;
+    } catch (error) {
+      context.response.status = 500;
+      context.response.body = { error: error.message };
+    }
+  }
+
+  static async deleteGoal(context: Context) {
+    try {
+      const { id } = context.params;
+      const goal = await GoalService.deleteGoal(id);
+      if (!goal) {
+        context.response.status = 404;
+        context.response.body = { error: 'Goal not found' };
+        return;
+      }
+      context.response.status = 200;
+      context.response.body = { message: 'Goal deleted successfully' };
+    } catch (error) {
+      context.response.status = 500;
+      context.response.body = { error: error.message };
+    }
+  }
+}
+
+export default GoalController;
