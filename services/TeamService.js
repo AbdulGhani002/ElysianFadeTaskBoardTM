@@ -1,5 +1,5 @@
-import Team from '../models/Team.ts';
-import User from '../models/User.ts';
+const Team = require('../models/Team');
+const User = require('../models/User');
 
 class TeamService {
   static async createTeam(teamData) {
@@ -47,4 +47,4 @@ class TeamService {
   }
 }
 
-export default TeamService;
+module.exports = TeamService;
