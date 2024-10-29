@@ -9,7 +9,9 @@ router.use(async (context, next) => {
   context.render = async (view: string, data: Record<string, unknown>) => {
     const filePath = join(Deno.cwd(), 'views', view);
     const renderedContent = await dejs.render(filePath, data);
-    context.response.body = renderedContent;
+    if (context.response.writable) {
+      context.response.body = renderedContent;
+    }
   };
   await next();
 });
