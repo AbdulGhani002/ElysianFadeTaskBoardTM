@@ -2,7 +2,7 @@
 
 ## Project Description
 
-Elysian Fade Task BoardTM is a feature-rich task management system built using Deno as the runtime, MongoDB for data storage, EJS templates for the front end, and MVC architecture. The system is designed with best practices for security, modularity, and scalability.
+Elysian Fade Task BoardTM is a feature-rich task management system built using Node.js as the runtime, MongoDB for data storage, EJS templates for the front end, and MVC architecture. The system is designed with best practices for security, modularity, and scalability.
 
 ## Setup Instructions
 
@@ -14,8 +14,7 @@ Elysian Fade Task BoardTM is a feature-rich task management system built using D
 
 2. Install dependencies:
    ```sh
-   deno run -A --unstable https://deno.land/x/install/install.ts
-   deno install -qAf --unstable https://deno.land/x/denon/denon.ts
+   npm install
    ```
 
 3. Set up environment variables:
@@ -28,7 +27,7 @@ Elysian Fade Task BoardTM is a feature-rich task management system built using D
 
 4. Start the application:
    ```sh
-   deno task start
+   npm start
    ```
 
 ## Usage Instructions
@@ -126,28 +125,28 @@ Elysian Fade Task BoardTM is a feature-rich task management system built using D
 
 ## Debugging Instructions
 
-To debug errors in Deno, follow these steps:
+To debug errors in Node.js, follow these steps:
 
 1. **Use the `--inspect` flag**:
-   Start your Deno application with the `--inspect` flag to enable debugging. This will start a debugging session and provide a URL to open in Chrome DevTools.
+   Start your Node.js application with the `--inspect` flag to enable debugging. This will start a debugging session and provide a URL to open in Chrome DevTools.
    ```sh
-   deno run --inspect app.ts
+   node --inspect app.js
    ```
 
 2. **Use the `--inspect-brk` flag**:
    If you want to break on the first line of your code, use the `--inspect-brk` flag.
    ```sh
-   deno run --inspect-brk app.ts
+   node --inspect-brk app.js
    ```
 
 3. **Use the `console.log` statements**:
    Add `console.log` statements in your code to print variables and track the flow of execution.
 
-4. **Use the Deno Debugger**:
-   Deno has a built-in debugger that you can use to set breakpoints, step through code, and inspect variables. You can access the debugger by opening the provided URL in Chrome DevTools.
+4. **Use the Node.js Debugger**:
+   Node.js has a built-in debugger that you can use to set breakpoints, step through code, and inspect variables. You can access the debugger by opening the provided URL in Chrome DevTools.
 
-5. **Check the Deno documentation**:
-   Refer to the [Deno documentation](https://deno.land/manual/tools/debugger) for more information on debugging tools and techniques.
+5. **Check the Node.js documentation**:
+   Refer to the [Node.js documentation](https://nodejs.org/en/docs/guides/debugging-getting-started/) for more information on debugging tools and techniques.
 
 ## Frontend Features
 
