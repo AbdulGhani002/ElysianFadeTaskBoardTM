@@ -9,6 +9,7 @@ class TaskController {
       context.response.status = 201;
       context.render('SuccessPage.ejs', { task });
     } catch (error) {
+      console.error('Error in createTask:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -20,6 +21,7 @@ class TaskController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { tasks });
     } catch (error) {
+      console.error('Error in getTasks:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -37,6 +39,7 @@ class TaskController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { task });
     } catch (error) {
+      console.error('Error in getTaskById:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -55,6 +58,7 @@ class TaskController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { task });
     } catch (error) {
+      console.error('Error in updateTask:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -72,6 +76,7 @@ class TaskController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { message: 'Task deleted successfully' });
     } catch (error) {
+      console.error('Error in deleteTask:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
