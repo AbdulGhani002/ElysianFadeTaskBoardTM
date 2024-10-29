@@ -1,5 +1,5 @@
-const Team = require('../models/Team');
-const User = require('../models/User');
+const Team = require('../models/Team.js');
+const User = require('../models/User.js');
 
 class TeamService {
   static async createTeam(teamData) {

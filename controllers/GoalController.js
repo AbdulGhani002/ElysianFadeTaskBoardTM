@@ -1,3 +1,4 @@
+const Goal = require('../models/Goal');
 const GoalService = require('../services/GoalService');
 
 class GoalController {
