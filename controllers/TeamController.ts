@@ -11,6 +11,7 @@ class TeamController {
       context.response.status = 201;
       context.render('SuccessPage.ejs', { team });
     } catch (error) {
+      console.error('Error in createTeam:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -36,6 +37,7 @@ class TeamController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { team });
     } catch (error) {
+      console.error('Error in addMember:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -55,6 +57,7 @@ class TeamController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { team });
     } catch (error) {
+      console.error('Error in removeMember:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -80,6 +83,7 @@ class TeamController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { user });
     } catch (error) {
+      console.error('Error in assignRole:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
