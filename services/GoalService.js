@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Goal = require('../models/Goal');
+const Goal = require('../models/Goal.js');
 
 class GoalService {
   static async createGoal(goalData) {
