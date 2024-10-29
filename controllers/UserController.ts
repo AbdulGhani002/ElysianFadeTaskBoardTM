@@ -13,6 +13,7 @@ class UserController {
       context.response.status = 201;
       context.render('SuccessPage.ejs', { message: 'User registered successfully' });
     } catch (error) {
+      console.error('Error in register:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -37,6 +38,7 @@ class UserController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { token });
     } catch (error) {
+      console.error('Error in login:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -55,6 +57,7 @@ class UserController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { user });
     } catch (error) {
+      console.error('Error in updateProfile:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
