@@ -1,7 +1,18 @@
 import { Context } from 'https://deno.land/x/oak/mod.ts';
 import TaskService from '../services/TaskService.ts';
 import * as dejs from "https://deno.land/x/dejs@0.10.3/mod.ts";
+
 class TaskController {
+  private static handleError(context: Context, error: Error) {
+    console.error("Error:", error); // Log the error
+    context.response.status = 500;
+
+    // Ensure response is writable before rendering
+    if (context.response.writable) {
+      context.render('ErrorPage.ejs', { error: error.message });
+    }
+  }
+
   static async createTask(context: Context) {
     try {
       const body = await context.request.body().value;
@@ -11,11 +22,7 @@ class TaskController {
         context.render('SuccessPage.ejs', { task });
       }
     } catch (error) {
-      console.error('Error in createTask:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -27,11 +34,7 @@ class TaskController {
         context.render('SuccessPage.ejs', { tasks });
       }
     } catch (error) {
-      console.error('Error in getTasks:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -51,11 +54,7 @@ class TaskController {
         context.render('SuccessPage.ejs', { task });
       }
     } catch (error) {
-      console.error('Error in getTaskById:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -76,11 +75,7 @@ class TaskController {
         context.render('SuccessPage.ejs', { task });
       }
     } catch (error) {
-      console.error('Error in updateTask:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -100,11 +95,7 @@ class TaskController {
         context.render('SuccessPage.ejs', { message: 'Task deleted successfully' });
       }
     } catch (error) {
-      console.error('Error in deleteTask:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 }
