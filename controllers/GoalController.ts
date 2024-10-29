@@ -7,10 +7,10 @@ class GoalController {
       const body = await context.request.body().value;
       const goal = await GoalService.createGoal(body);
       context.response.status = 201;
-      context.response.body = goal;
+      context.render('SuccessPage.ejs', { goal });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -18,10 +18,10 @@ class GoalController {
     try {
       const goals = await GoalService.getGoals();
       context.response.status = 200;
-      context.response.body = goals;
+      context.render('SuccessPage.ejs', { goals });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -31,14 +31,14 @@ class GoalController {
       const goal = await GoalService.getGoalById(id);
       if (!goal) {
         context.response.status = 404;
-        context.response.body = { error: 'Goal not found' };
+        context.render('ErrorPage.ejs', { error: 'Goal not found' });
         return;
       }
       context.response.status = 200;
-      context.response.body = goal;
+      context.render('SuccessPage.ejs', { goal });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -49,14 +49,14 @@ class GoalController {
       const goal = await GoalService.updateGoal(id, body);
       if (!goal) {
         context.response.status = 404;
-        context.response.body = { error: 'Goal not found' };
+        context.render('ErrorPage.ejs', { error: 'Goal not found' });
         return;
       }
       context.response.status = 200;
-      context.response.body = goal;
+      context.render('SuccessPage.ejs', { goal });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -66,14 +66,14 @@ class GoalController {
       const goal = await GoalService.deleteGoal(id);
       if (!goal) {
         context.response.status = 404;
-        context.response.body = { error: 'Goal not found' };
+        context.render('ErrorPage.ejs', { error: 'Goal not found' });
         return;
       }
       context.response.status = 200;
-      context.response.body = { message: 'Goal deleted successfully' };
+      context.render('SuccessPage.ejs', { message: 'Goal deleted successfully' });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 }

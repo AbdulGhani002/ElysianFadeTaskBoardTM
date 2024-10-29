@@ -7,10 +7,10 @@ class NotificationController {
       const { taskId, userId } = await context.request.body().value;
       await NotificationService.sendTaskReminder(taskId, userId);
       context.response.status = 200;
-      context.response.body = { message: 'Task reminder sent successfully' };
+      context.render('SuccessPage.ejs', { message: 'Task reminder sent successfully' });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -19,10 +19,10 @@ class NotificationController {
       const { taskId, userId } = await context.request.body().value;
       await NotificationService.sendDeadlineNotification(taskId, userId);
       context.response.status = 200;
-      context.response.body = { message: 'Deadline notification sent successfully' };
+      context.render('SuccessPage.ejs', { message: 'Deadline notification sent successfully' });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -31,10 +31,10 @@ class NotificationController {
       const { teamId, message } = await context.request.body().value;
       await NotificationService.notifyTeam(teamId, message);
       context.response.status = 200;
-      context.response.body = { message: 'Team notified successfully' };
+      context.render('SuccessPage.ejs', { message: 'Team notified successfully' });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 }
