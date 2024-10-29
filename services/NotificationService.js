@@ -1,5 +1,7 @@
 const { ObjectId } = require('mongoose').Types;
 const { connectToDatabase } = require('../utils/database');
+const Task = require('../models/Task.js');
+const User = require('../models/User.js');
 
 class NotificationService {
   static async sendTaskReminder(taskId, userId) {
