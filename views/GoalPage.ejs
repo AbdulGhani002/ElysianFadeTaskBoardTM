@@ -11,27 +11,33 @@
         <h1>Goal Tracking</h1>
     </header>
     <div class="container">
-        <form id="goalForm">
-            <div class="form-group">
-                <label for="goalTitle">Goal Title:</label>
-                <input type="text" id="goalTitle" name="goalTitle" required>
+        <form id="goalForm" class="card">
+            <div class="card-header">Create a New Goal</div>
+            <div class="card-content">
+                <div class="form-group">
+                    <label for="goalTitle">Goal Title:</label>
+                    <input type="text" id="goalTitle" name="goalTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="goalDescription">Goal Description:</label>
+                    <textarea id="goalDescription" name="goalDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="goalDueDate">Due Date:</label>
+                    <input type="date" id="goalDueDate" name="goalDueDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="goalProgress">Progress:</label>
+                    <input type="number" id="goalProgress" name="goalProgress" min="0" max="100" required>
+                </div>
+                <button type="submit">Save Goal</button>
             </div>
-            <div class="form-group">
-                <label for="goalDescription">Goal Description:</label>
-                <textarea id="goalDescription" name="goalDescription" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="goalDueDate">Due Date:</label>
-                <input type="date" id="goalDueDate" name="goalDueDate" required>
-            </div>
-            <div class="form-group">
-                <label for="goalProgress">Progress:</label>
-                <input type="number" id="goalProgress" name="goalProgress" min="0" max="100" required>
-            </div>
-            <button type="submit">Save Goal</button>
         </form>
-        <div id="goalList">
-            <!-- Goals will be loaded here -->
+        <div id="goalList" class="card">
+            <div class="card-header">Your Goals</div>
+            <div class="card-content">
+                <!-- Goals will be loaded here -->
+            </div>
         </div>
     </div>
     <script src="/js/main.js"></script>

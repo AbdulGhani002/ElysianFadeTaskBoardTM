@@ -103,3 +103,70 @@ button:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .task-board {
+    flex-direction: column;
+  }
+
+  .task-column {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+}
+
+/* Enhanced Styles for Charming and Great Look */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #e0f7fa;
+}
+
+header {
+  background-color: #00796b;
+}
+
+button {
+  background-color: #00796b;
+}
+
+button:hover {
+  background-color: #004d40;
+}
+
+.task {
+  background-color: #ffffff;
+  border: 1px solid #00796b;
+}
+
+.task h3 {
+  color: #00796b;
+}
+
+/* New CSS Classes for Improved Design Elements */
+.card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.card-content {
+  font-size: 1em;
+  color: #333;
+}
