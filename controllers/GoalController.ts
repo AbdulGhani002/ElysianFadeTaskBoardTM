@@ -1,6 +1,6 @@
 import { Context } from 'https://deno.land/x/oak/mod.ts';
 import GoalService from '../services/GoalService.ts';
-
+import * as dejs from "https://deno.land/x/dejs@0.10.3/mod.ts";
 class GoalController {
   static async createGoal(context: Context) {
     try {
