@@ -9,6 +9,7 @@ class GoalController {
       context.response.status = 201;
       context.render('SuccessPage.ejs', { goal });
     } catch (error) {
+      console.error('Error in createGoal:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -20,6 +21,7 @@ class GoalController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { goals });
     } catch (error) {
+      console.error('Error in getGoals:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -37,6 +39,7 @@ class GoalController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { goal });
     } catch (error) {
+      console.error('Error in getGoalById:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -55,6 +58,7 @@ class GoalController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { goal });
     } catch (error) {
+      console.error('Error in updateGoal:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -72,6 +76,7 @@ class GoalController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { message: 'Goal deleted successfully' });
     } catch (error) {
+      console.error('Error in deleteGoal:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
