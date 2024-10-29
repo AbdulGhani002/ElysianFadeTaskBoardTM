@@ -1,13 +1,13 @@
-import { ObjectId } from 'https://deno.land/x/mongo@v0.29.0/mod.ts';
-import { connectToDatabase } from '../utils/database.ts';
+const { ObjectId } = require('mongoose').Types;
+const { connectToDatabase } = require('../utils/database');
 
 class NotificationService {
-  static async sendTaskReminder(taskId: ObjectId, userId: ObjectId) {
+  static async sendTaskReminder(taskId, userId) {
     const db = await connectToDatabase();
     const tasksCollection = db.collection('tasks');
     const usersCollection = db.collection('users');
-    const task = await tasksCollection.findOne({ _id: taskId });
-    const user = await usersCollection.findOne({ _id: userId });
+    const task = await tasksCollection.findOne({ _id: ObjectId(taskId) });
+    const user = await usersCollection.findOne({ _id: ObjectId(userId) });
 
     if (!task || !user) {
       throw new Error('Task or User not found');
@@ -17,12 +17,12 @@ class NotificationService {
     console.log(`Reminder: Task "${task.title}" is due soon for user ${user.name}`);
   }
 
-  static async sendDeadlineNotification(taskId: ObjectId, userId: ObjectId) {
+  static async sendDeadlineNotification(taskId, userId) {
     const db = await connectToDatabase();
     const tasksCollection = db.collection('tasks');
     const usersCollection = db.collection('users');
-    const task = await tasksCollection.findOne({ _id: taskId });
-    const user = await usersCollection.findOne({ _id: userId });
+    const task = await tasksCollection.findOne({ _id: ObjectId(taskId) });
+    const user = await usersCollection.findOne({ _id: ObjectId(userId) });
 
     if (!task || !user) {
       throw new Error('Task or User not found');
@@ -32,10 +32,10 @@ class NotificationService {
     console.log(`Deadline: Task "${task.title}" is due now for user ${user.name}`);
   }
 
-  static async notifyTeam(teamId: ObjectId, message: string) {
+  static async notifyTeam(teamId, message) {
     const db = await connectToDatabase();
     const teamsCollection = db.collection('teams');
-    const team = await teamsCollection.findOne({ _id: teamId });
+    const team = await teamsCollection.findOne({ _id: ObjectId(teamId) });
 
     if (!team) {
       throw new Error('Team not found');
@@ -46,4 +46,4 @@ class NotificationService {
   }
 }
 
-export default NotificationService;
+module.exports = NotificationService;
