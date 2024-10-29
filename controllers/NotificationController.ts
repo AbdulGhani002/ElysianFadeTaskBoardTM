@@ -9,6 +9,7 @@ class NotificationController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { message: 'Task reminder sent successfully' });
     } catch (error) {
+      console.error('Error in sendTaskReminder:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -21,6 +22,7 @@ class NotificationController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { message: 'Deadline notification sent successfully' });
     } catch (error) {
+      console.error('Error in sendDeadlineNotification:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
@@ -33,6 +35,7 @@ class NotificationController {
       context.response.status = 200;
       context.render('SuccessPage.ejs', { message: 'Team notified successfully' });
     } catch (error) {
+      console.error('Error in notifyTeam:', error);
       context.response.status = 500;
       context.render('ErrorPage.ejs', { error: error.message });
     }
