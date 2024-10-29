@@ -8,11 +8,12 @@ import notificationRoutes from './routes/notificationRoutes.ts';
 import goalRoutes from './routes/goalRoutes.ts';
 import baseRoutes from './routes/baseRoutes.ts';
 import * as dejs from 'https://deno.land/x/dejs@0.10.3/mod.ts'; 
+import { CustomContext } from './routes/baseRoutes.ts';
 
 const app = new Application();
 const port: number = parseInt(env.PORT) || 8080;
 
-app.use(async (context, next) => {
+app.use(async (context: CustomContext, next) => {
   context.render = async (view: string, data: Record<string, unknown>) => {
     const filePath = `./views/${view}`; // Path to your views
     context.response.body = await dejs.render(filePath, data);
@@ -22,14 +23,20 @@ app.use(async (context, next) => {
 
 // Use your routes
 app.use(taskRoutes.routes());
+app.use(taskRoutes.allowedMethods());
 app.use(userRoutes.routes());
+app.use(userRoutes.allowedMethods());
 app.use(teamRoutes.routes());
+app.use(teamRoutes.allowedMethods());
 app.use(notificationRoutes.routes());
+app.use(notificationRoutes.allowedMethods());
 app.use(goalRoutes.routes());
+app.use(goalRoutes.allowedMethods());
 app.use(baseRoutes.routes());
+app.use(baseRoutes.allowedMethods());
 
 // Error handling middleware
-app.use(async (context, next) => {
+app.use(async (context: CustomContext, next) => {
   try {
     await next();
   } catch (err) {
@@ -43,7 +50,7 @@ app.use(async (context, next) => {
     }
 
     // Render the error page
-    await context.render('ErrorPage.ejs', { error: err.message });
+    await context.render('ErrorPage.ejs', { error: (err as Error).message });
   }
 });
 

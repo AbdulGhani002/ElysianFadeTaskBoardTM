@@ -3,7 +3,18 @@ import { hash, compare } from 'https://deno.land/x/bcrypt/mod.ts';
 import { create, verify } from 'https://deno.land/x/djwt/mod.ts';
 import { Context } from 'https://deno.land/x/oak/mod.ts';
 import * as dejs from "https://deno.land/x/dejs@0.10.3/mod.ts";
+
 class UserController {
+  private static handleError(context: Context, error: Error) {
+    console.error("Error:", error); // Log the error
+    context.response.status = 500;
+
+    // Ensure response is writable before rendering
+    if (context.response.writable) {
+      context.render('ErrorPage.ejs', { error: error.message });
+    }
+  }
+
   static async register(context: Context) {
     try {
       const { name, email, password, role } = await context.request.body().value;
@@ -15,11 +26,7 @@ class UserController {
         context.render('SuccessPage.ejs', { message: 'User registered successfully' });
       }
     } catch (error) {
-      console.error('Error in register:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -48,11 +55,7 @@ class UserController {
         context.render('SuccessPage.ejs', { token });
       }
     } catch (error) {
-      console.error('Error in login:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -73,11 +76,7 @@ class UserController {
         context.render('SuccessPage.ejs', { user });
       }
     } catch (error) {
-      console.error('Error in updateProfile:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 }
