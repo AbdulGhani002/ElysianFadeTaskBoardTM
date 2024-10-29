@@ -1,7 +1,7 @@
 /* General Styles */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Roboto', sans-serif;
+  background-color: #e0f7fa;
   margin: 0;
   padding: 0;
 }
@@ -14,7 +14,7 @@ body {
 
 /* Header Styles */
 header {
-  background-color: #333;
+  background-color: #00796b;
   color: #fff;
   padding: 10px 0;
   text-align: center;
@@ -44,8 +44,8 @@ header h1 {
 }
 
 .task {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: #ffffff;
+  border: 1px solid #00796b;
   border-radius: 3px;
   padding: 10px;
   margin-bottom: 10px;
@@ -53,20 +53,22 @@ header h1 {
 
 .task h3 {
   margin-top: 0;
+  color: #00796b;
 }
 
 /* Button Styles */
 button {
-  background-color: #333;
+  background-color: #00796b;
   color: #fff;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #555;
+  background-color: #004d40;
 }
 
 /* Modal Styles */
@@ -169,4 +171,18 @@ button:hover {
 .card-content {
   font-size: 1em;
   color: #333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  animation: fadeIn 0.5s ease-in-out;
 }

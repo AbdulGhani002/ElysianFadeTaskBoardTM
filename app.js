@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
+const session = require('express-session');
+const AuthService = require('./services/AuthService');
 
 dotenv.config();
 
@@ -14,6 +16,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set to true if using HTTPS
+}));
 
 const baseRoutes = require('./routes/baseRoutes');
 const goalRoutes = require('./routes/goalRoutes');
@@ -28,6 +37,40 @@ app.use('/notifications', notificationRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/teams', teamRoutes);
 app.use('/users', userRoutes);
+
+app.get('/register', (req, res) => {
+  res.render('RegisterPage');
+});
+
+app.get('/login', (req, res) => {
+  res.render('LoginPage');
+});
+
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const token = await AuthService.authenticate(email, password);
+    req.session.token = token;
+    res.redirect('/');
+  } catch (error) {
+    res.status(401).render('ErrorPage', { error: error.message });
+  }
+});
+
+app.use((req, res, next) => {
+  if (req.session.token) {
+    AuthService.authorize(req.session.token)
+      .then(user => {
+        req.user = user;
+        next();
+      })
+      .catch(error => {
+        res.status(401).render('ErrorPage', { error: 'Unauthorized' });
+      });
+  } else {
+    res.status(401).render('ErrorPage', { error: 'Unauthorized' });
+  }
+});
 
 app.use((err, req, res, next) => {
   console.error('Error:', err);
