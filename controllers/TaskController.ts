@@ -7,10 +7,10 @@ class TaskController {
       const body = await context.request.body().value;
       const task = await TaskService.createTask(body);
       context.response.status = 201;
-      context.response.body = task;
+      context.render('SuccessPage.ejs', { task });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -18,10 +18,10 @@ class TaskController {
     try {
       const tasks = await TaskService.getTasks();
       context.response.status = 200;
-      context.response.body = tasks;
+      context.render('SuccessPage.ejs', { tasks });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -31,14 +31,14 @@ class TaskController {
       const task = await TaskService.getTaskById(id);
       if (!task) {
         context.response.status = 404;
-        context.response.body = { error: 'Task not found' };
+        context.render('ErrorPage.ejs', { error: 'Task not found' });
         return;
       }
       context.response.status = 200;
-      context.response.body = task;
+      context.render('SuccessPage.ejs', { task });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -49,14 +49,14 @@ class TaskController {
       const task = await TaskService.updateTask(id, body);
       if (!task) {
         context.response.status = 404;
-        context.response.body = { error: 'Task not found' };
+        context.render('ErrorPage.ejs', { error: 'Task not found' });
         return;
       }
       context.response.status = 200;
-      context.response.body = task;
+      context.render('SuccessPage.ejs', { task });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -66,14 +66,14 @@ class TaskController {
       const task = await TaskService.deleteTask(id);
       if (!task) {
         context.response.status = 404;
-        context.response.body = { error: 'Task not found' };
+        context.render('ErrorPage.ejs', { error: 'Task not found' });
         return;
       }
       context.response.status = 200;
-      context.response.body = { message: 'Task deleted successfully' };
+      context.render('SuccessPage.ejs', { message: 'Task deleted successfully' });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 }
