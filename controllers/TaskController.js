@@ -1,3 +1,4 @@
+const Task = require('../models/Task');
 const TaskService = require('../services/TaskService');
 
 class TaskController {
