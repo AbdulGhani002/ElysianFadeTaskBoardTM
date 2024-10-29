@@ -2,7 +2,18 @@ import { Context } from 'https://deno.land/x/oak/mod.ts';
 import Team from '../models/Team.ts';
 import User from '../models/User.ts';
 import * as dejs from "https://deno.land/x/dejs@0.10.3/mod.ts";
+
 class TeamController {
+  private static handleError(context: Context, error: Error) {
+    console.error("Error:", error); // Log the error
+    context.response.status = 500;
+
+    // Ensure response is writable before rendering
+    if (context.response.writable) {
+      context.render('ErrorPage.ejs', { error: error.message });
+    }
+  }
+
   async createTeam(context: Context) {
     try {
       const { teamName, members, permissions } = await context.request.body().value;
@@ -13,11 +24,7 @@ class TeamController {
         context.render('SuccessPage.ejs', { team });
       }
     } catch (error) {
-      console.error('Error in createTeam:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      TeamController.handleError(context, error);
     }
   }
 
@@ -47,11 +54,7 @@ class TeamController {
         context.render('SuccessPage.ejs', { team });
       }
     } catch (error) {
-      console.error('Error in addMember:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      TeamController.handleError(context, error);
     }
   }
 
@@ -73,11 +76,7 @@ class TeamController {
         context.render('SuccessPage.ejs', { team });
       }
     } catch (error) {
-      console.error('Error in removeMember:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      TeamController.handleError(context, error);
     }
   }
 
@@ -107,11 +106,7 @@ class TeamController {
         context.render('SuccessPage.ejs', { user });
       }
     } catch (error) {
-      console.error('Error in assignRole:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      TeamController.handleError(context, error);
     }
   }
 }

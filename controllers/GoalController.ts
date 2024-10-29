@@ -1,7 +1,18 @@
 import { Context } from 'https://deno.land/x/oak/mod.ts';
 import GoalService from '../services/GoalService.ts';
 import * as dejs from "https://deno.land/x/dejs@0.10.3/mod.ts";
+
 class GoalController {
+  private static handleError(context: Context, error: Error) {
+    console.error("Error:", error); // Log the error
+    context.response.status = 500;
+
+    // Ensure response is writable before rendering
+    if (context.response.writable) {
+      context.render('ErrorPage.ejs', { error: error.message });
+    }
+  }
+
   static async createGoal(context: Context) {
     try {
       const body = await context.request.body().value;
@@ -11,11 +22,7 @@ class GoalController {
         context.render('SuccessPage.ejs', { goal });
       }
     } catch (error) {
-      console.error('Error in createGoal:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -27,11 +34,7 @@ class GoalController {
         context.render('SuccessPage.ejs', { goals });
       }
     } catch (error) {
-      console.error('Error in getGoals:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -51,11 +54,7 @@ class GoalController {
         context.render('SuccessPage.ejs', { goal });
       }
     } catch (error) {
-      console.error('Error in getGoalById:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -76,11 +75,7 @@ class GoalController {
         context.render('SuccessPage.ejs', { goal });
       }
     } catch (error) {
-      console.error('Error in updateGoal:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 
@@ -100,11 +95,7 @@ class GoalController {
         context.render('SuccessPage.ejs', { message: 'Goal deleted successfully' });
       }
     } catch (error) {
-      console.error('Error in deleteGoal:', error);
-      context.response.status = 500;
-      if (context.response.writable) {
-        context.render('ErrorPage.ejs', { error: error.message });
-      }
+      this.handleError(context, error);
     }
   }
 }
