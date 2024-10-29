@@ -2,7 +2,7 @@ import User from '../models/User.ts';
 import { hash, compare } from 'https://deno.land/x/bcrypt/mod.ts';
 import { create, verify } from 'https://deno.land/x/djwt/mod.ts';
 import { Context } from 'https://deno.land/x/oak/mod.ts';
-
+import * as dejs from "https://deno.land/x/dejs@0.10.3/mod.ts";
 class UserController {
   static async register(context: Context) {
     try {
