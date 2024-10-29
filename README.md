@@ -148,3 +148,36 @@ To debug errors in Deno, follow these steps:
 
 5. **Check the Deno documentation**:
    Refer to the [Deno documentation](https://deno.land/manual/tools/debugger) for more information on debugging tools and techniques.
+
+## Frontend Features
+
+### Enhanced Design and Responsiveness
+
+The frontend of the Elysian Fade Task BoardTM has been enhanced to provide a charming and great look, along with improved responsiveness. The following changes have been made:
+
+- **CSS Styles**: The CSS styles in `public/css/styles.css` have been enhanced to improve the overall look and feel of the application. New CSS classes have been added for improved design elements.
+- **Responsive Design**: Media queries have been added to `public/css/styles.css` to ensure the application is mobile-friendly and responsive.
+- **EJS Templates**: The EJS templates in the `views` directory have been updated to reflect the new design and responsiveness.
+- **JavaScript Functionality**: New JavaScript functionality has been added to `public/js/main.js` to support enhanced user interactions and responsiveness.
+
+### Using the New Frontend Features
+
+To take advantage of the new frontend features, follow these steps:
+
+1. **Access the Application**: Open your web browser and navigate to `http://localhost:3000` to access the Elysian Fade Task BoardTM.
+
+2. **Responsive Design**: The application is now mobile-friendly and responsive. You can use it on various devices, including desktops, tablets, and smartphones. The layout will adjust automatically based on the screen size.
+
+3. **Enhanced User Interactions**: The task board now supports enhanced user interactions, such as drag-and-drop functionality for tasks. You can drag tasks between columns to update their status.
+
+4. **Improved Design Elements**: The application features a charming and great look with improved design elements. Enjoy the visually appealing interface while managing your tasks.
+
+5. **Task Modal**: The task modal has been updated with new HTML elements for an improved user experience. You can create and edit tasks using the modal.
+
+6. **Goal Tracking**: The goal tracking page has been updated with new design elements and responsiveness. You can create and track your goals with ease.
+
+7. **Analytics**: The analytics page has been enhanced to provide a better user experience. View daily reports, weekly summaries, and team performance reports.
+
+8. **User Settings**: The user settings page has been updated with new design elements and responsiveness. Customize your preferences, such as theme, notification preferences, task view, language, and timezone.
+
+Enjoy the enhanced frontend features of the Elysian Fade Task BoardTM and experience a charming and great design with improved responsiveness.
