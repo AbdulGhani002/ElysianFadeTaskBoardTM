@@ -79,4 +79,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initial load
   loadTasks();
+
+  // Enhanced User Interactions
+  const taskColumns = document.querySelectorAll('.task-column');
+  taskColumns.forEach(column => {
+    column.addEventListener('dragover', function(event) {
+      event.preventDefault();
+    });
+
+    column.addEventListener('drop', function(event) {
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData('text');
+      const taskElement = document.getElementById(taskId);
+      column.querySelector('.task-list').appendChild(taskElement);
+      updateTaskStatus(taskId, column.id);
+    });
+  });
+
+  function updateTaskStatus(taskId, status) {
+    fetch(`/tasks/${taskId}/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        alert('Error updating task status');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+
+  // Responsive Design Enhancements
+  window.addEventListener('resize', function() {
+    if (window.innerWidth <= 768) {
+      document.body.classList.add('mobile-view');
+    } else {
+      document.body.classList.remove('mobile-view');
+    }
+  });
+
+  if (window.innerWidth <= 768) {
+    document.body.classList.add('mobile-view');
+  }
 });
