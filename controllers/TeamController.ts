@@ -9,10 +9,10 @@ class TeamController {
       const team = new Team({ teamName, members, permissions });
       await team.save();
       context.response.status = 201;
-      context.response.body = team;
+      context.render('SuccessPage.ejs', { team });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -22,22 +22,22 @@ class TeamController {
       const team = await Team.findById(teamId);
       if (!team) {
         context.response.status = 404;
-        context.response.body = { error: 'Team not found' };
+        context.render('ErrorPage.ejs', { error: 'Team not found' });
         return;
       }
       const user = await User.findById(userId);
       if (!user) {
         context.response.status = 404;
-        context.response.body = { error: 'User not found' };
+        context.render('ErrorPage.ejs', { error: 'User not found' });
         return;
       }
       team.members.push(user);
       await team.save();
       context.response.status = 200;
-      context.response.body = team;
+      context.render('SuccessPage.ejs', { team });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -47,16 +47,16 @@ class TeamController {
       const team = await Team.findById(teamId);
       if (!team) {
         context.response.status = 404;
-        context.response.body = { error: 'Team not found' };
+        context.render('ErrorPage.ejs', { error: 'Team not found' });
         return;
       }
       team.members = team.members.filter(member => member.toString() !== userId);
       await team.save();
       context.response.status = 200;
-      context.response.body = team;
+      context.render('SuccessPage.ejs', { team });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -66,22 +66,22 @@ class TeamController {
       const team = await Team.findById(teamId);
       if (!team) {
         context.response.status = 404;
-        context.response.body = { error: 'Team not found' };
+        context.render('ErrorPage.ejs', { error: 'Team not found' });
         return;
       }
       const user = await User.findById(userId);
       if (!user) {
         context.response.status = 404;
-        context.response.body = { error: 'User not found' };
+        context.render('ErrorPage.ejs', { error: 'User not found' });
         return;
       }
       user.role = role;
       await user.save();
       context.response.status = 200;
-      context.response.body = user;
+      context.render('SuccessPage.ejs', { user });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 }
