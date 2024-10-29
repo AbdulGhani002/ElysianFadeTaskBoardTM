@@ -11,10 +11,10 @@ class UserController {
       const user = new User({ name, email, password: hashedPassword, role });
       await user.save();
       context.response.status = 201;
-      context.response.body = { message: 'User registered successfully' };
+      context.render('SuccessPage.ejs', { message: 'User registered successfully' });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -24,21 +24,21 @@ class UserController {
       const user = await User.findOne({ email });
       if (!user) {
         context.response.status = 404;
-        context.response.body = { message: 'User not found' };
+        context.render('ErrorPage.ejs', { error: 'User not found' });
         return;
       }
       const isMatch = await compare(password, user.password);
       if (!isMatch) {
         context.response.status = 400;
-        context.response.body = { message: 'Invalid credentials' };
+        context.render('ErrorPage.ejs', { error: 'Invalid credentials' });
         return;
       }
       const token = await create({ alg: "HS256", typ: "JWT" }, { userId: user._id, role: user.role }, Deno.env.get('JWT_SECRET'));
       context.response.status = 200;
-      context.response.body = { token };
+      context.render('SuccessPage.ejs', { token });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 
@@ -49,14 +49,14 @@ class UserController {
       const user = await User.findByIdAndUpdate(userId, updates, { new: true });
       if (!user) {
         context.response.status = 404;
-        context.response.body = { message: 'User not found' };
+        context.render('ErrorPage.ejs', { error: 'User not found' });
         return;
       }
       context.response.status = 200;
-      context.response.body = user;
+      context.render('SuccessPage.ejs', { user });
     } catch (error) {
       context.response.status = 500;
-      context.response.body = { error: error.message };
+      context.render('ErrorPage.ejs', { error: error.message });
     }
   }
 }

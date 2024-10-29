@@ -5,14 +5,14 @@ class AnalyticsController {
   private static handleError(context: Context, error: Error) {
     console.error("Error:", error); // Log the error
     context.response.status = 500;
-    context.response.body = { error: error.message };
+    context.render('ErrorPage.ejs', { error: error.message });
   }
 
   static async generateDailyReport(context: Context) {
     try {
       const report = await AnalyticsService.generateDailyReport();
       context.response.status = 200;
-      context.response.body = report;
+      context.render('SuccessPage.ejs', { report });
     } catch (error) {
       this.handleError(context, error);
     }
@@ -22,7 +22,7 @@ class AnalyticsController {
     try {
       const summary = await AnalyticsService.generateWeeklySummary();
       context.response.status = 200;
-      context.response.body = summary;
+      context.render('SuccessPage.ejs', { summary });
     } catch (error) {
       this.handleError(context, error);
     }
@@ -32,7 +32,7 @@ class AnalyticsController {
     try {
       const report = await AnalyticsService.generateTeamPerformanceReport();
       context.response.status = 200;
-      context.response.body = report;
+      context.render('SuccessPage.ejs', { report });
     } catch (error) {
       this.handleError(context, error);
     }
