@@ -9,11 +9,15 @@ class TeamController {
       const team = new Team({ teamName, members, permissions });
       await team.save();
       context.response.status = 201;
-      context.render('SuccessPage.ejs', { team });
+      if (context.response.writable) {
+        context.render('SuccessPage.ejs', { team });
+      }
     } catch (error) {
       console.error('Error in createTeam:', error);
       context.response.status = 500;
-      context.render('ErrorPage.ejs', { error: error.message });
+      if (context.response.writable) {
+        context.render('ErrorPage.ejs', { error: error.message });
+      }
     }
   }
 
@@ -23,23 +27,31 @@ class TeamController {
       const team = await Team.findById(teamId);
       if (!team) {
         context.response.status = 404;
-        context.render('ErrorPage.ejs', { error: 'Team not found' });
+        if (context.response.writable) {
+          context.render('ErrorPage.ejs', { error: 'Team not found' });
+        }
         return;
       }
       const user = await User.findById(userId);
       if (!user) {
         context.response.status = 404;
-        context.render('ErrorPage.ejs', { error: 'User not found' });
+        if (context.response.writable) {
+          context.render('ErrorPage.ejs', { error: 'User not found' });
+        }
         return;
       }
       team.members.push(user);
       await team.save();
       context.response.status = 200;
-      context.render('SuccessPage.ejs', { team });
+      if (context.response.writable) {
+        context.render('SuccessPage.ejs', { team });
+      }
     } catch (error) {
       console.error('Error in addMember:', error);
       context.response.status = 500;
-      context.render('ErrorPage.ejs', { error: error.message });
+      if (context.response.writable) {
+        context.render('ErrorPage.ejs', { error: error.message });
+      }
     }
   }
 
@@ -49,17 +61,23 @@ class TeamController {
       const team = await Team.findById(teamId);
       if (!team) {
         context.response.status = 404;
-        context.render('ErrorPage.ejs', { error: 'Team not found' });
+        if (context.response.writable) {
+          context.render('ErrorPage.ejs', { error: 'Team not found' });
+        }
         return;
       }
       team.members = team.members.filter(member => member.toString() !== userId);
       await team.save();
       context.response.status = 200;
-      context.render('SuccessPage.ejs', { team });
+      if (context.response.writable) {
+        context.render('SuccessPage.ejs', { team });
+      }
     } catch (error) {
       console.error('Error in removeMember:', error);
       context.response.status = 500;
-      context.render('ErrorPage.ejs', { error: error.message });
+      if (context.response.writable) {
+        context.render('ErrorPage.ejs', { error: error.message });
+      }
     }
   }
 
@@ -69,23 +87,31 @@ class TeamController {
       const team = await Team.findById(teamId);
       if (!team) {
         context.response.status = 404;
-        context.render('ErrorPage.ejs', { error: 'Team not found' });
+        if (context.response.writable) {
+          context.render('ErrorPage.ejs', { error: 'Team not found' });
+        }
         return;
       }
       const user = await User.findById(userId);
       if (!user) {
         context.response.status = 404;
-        context.render('ErrorPage.ejs', { error: 'User not found' });
+        if (context.response.writable) {
+          context.render('ErrorPage.ejs', { error: 'User not found' });
+        }
         return;
       }
       user.role = role;
       await user.save();
       context.response.status = 200;
-      context.render('SuccessPage.ejs', { user });
+      if (context.response.writable) {
+        context.render('SuccessPage.ejs', { user });
+      }
     } catch (error) {
       console.error('Error in assignRole:', error);
       context.response.status = 500;
-      context.render('ErrorPage.ejs', { error: error.message });
+      if (context.response.writable) {
+        context.render('ErrorPage.ejs', { error: error.message });
+      }
     }
   }
 }
