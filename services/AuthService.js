@@ -1,6 +1,8 @@
-import User from '../models/User.ts';
-import { compare, hash } from 'https://deno.land/x/bcrypt/mod.ts';
-import { create, verify } from 'https://deno.land/x/djwt/mod.ts';
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 
 class AuthService {
   static async authenticate(email, password) {
@@ -9,11 +11,11 @@ class AuthService {
       if (!user) {
         throw new Error('User not found');
       }
-      const isMatch = await compare(password, user.password);
+      const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         throw new Error('Invalid credentials');
       }
-      const token = await create({ alg: "HS256", typ: "JWT" }, { userId: user._id, role: user.role }, Deno.env.get('JWT_SECRET'));
+      const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET);
       return token;
     } catch (error) {
       throw new Error(error.message);
@@ -22,7 +24,7 @@ class AuthService {
 
   static async authorize(token) {
     try {
-      const decoded = await verify(token, Deno.env.get('JWT_SECRET'), "HS256");
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(decoded.userId);
       if (!user) {
         throw new Error('User not found');
@@ -41,4 +43,4 @@ class AuthService {
   }
 }
 
-export default AuthService;
+module.exports = AuthService;
