@@ -1,10 +1,10 @@
-import { Router } from 'oak';
-import UserController from '../controllers/UserController.ts';
+const express = require('express');
+const UserController = require('../controllers/UserController');
 
-const router = new Router();
+const router = express.Router();
 
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
 router.put('/profile/:userId', UserController.updateProfile);
 
-export default router;
+module.exports = router;
