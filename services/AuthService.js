@@ -41,6 +41,23 @@ class AuthService {
     }
     return true;
   }
+
+  static async storeSessionData(req, user) {
+    req.session.user = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    };
+  }
+
+  static async getSessionData(req) {
+    return req.session.user;
+  }
+
+  static async clearSessionData(req) {
+    req.session.destroy();
+  }
 }
 
 module.exports = AuthService;
