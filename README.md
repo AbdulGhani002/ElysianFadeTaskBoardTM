@@ -180,3 +180,454 @@ To take advantage of the new frontend features, follow these steps:
 8. **User Settings**: The user settings page has been updated with new design elements and responsiveness. Customize your preferences, such as theme, notification preferences, task view, language, and timezone.
 
 Enjoy the enhanced frontend features of the Elysian Fade Task BoardTM and experience a charming and great design with improved responsiveness.
+
+## System Design
+
+### Overview
+
+The Elysian Fade Task BoardTM is designed using the Model-View-Controller (MVC) architecture. This design pattern separates the application into three main components: Models, Views, and Controllers. This separation of concerns allows for better organization, maintainability, and scalability of the application.
+
+### Core Technologies
+
+- **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine. It is used for building the server-side of the application.
+- **Express**: A minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+- **MongoDB**: A NoSQL database used for storing and retrieving data.
+- **EJS**: A templating engine that allows for embedding JavaScript code into HTML templates.
+
+### Directory Structure
+
+The directory structure of the Elysian Fade Task BoardTM is organized as follows:
+
+```
+ElysianFadeTaskBoardTM/
+├── app.js
+├── config/
+│   └── env.js
+├── controllers/
+│   ├── AnalyticsController.js
+│   ├── GoalController.js
+│   ├── NotificationController.js
+│   ├── TaskController.js
+│   ├── TeamController.js
+│   └── UserController.js
+├── models/
+│   ├── Goal.js
+│   ├── Subtask.js
+│   ├── Tag.js
+│   ├── Task.js
+│   ├── Team.js
+│   └── User.js
+├── public/
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   └── main.js
+│   └── images/
+├── routes/
+│   ├── baseRoutes.js
+│   ├── goalRoutes.js
+│   ├── notificationRoutes.js
+│   ├── taskRoutes.js
+│   ├── teamRoutes.js
+│   └── userRoutes.js
+├── services/
+│   ├── AnalyticsService.js
+│   ├── AuthService.js
+│   ├── GoalService.js
+│   ├── NotificationService.js
+│   ├── TaskService.js
+│   ├── TeamService.js
+│   └── UserService.js
+├── utils/
+│   └── database.js
+├── views/
+│   ├── AnalyticsPage.ejs
+│   ├── ErrorPage.ejs
+│   ├── GoalPage.ejs
+│   ├── HomePage.ejs
+│   ├── LoginPage.ejs
+│   ├── RegisterPage.ejs
+│   ├── SettingsPage.ejs
+│   ├── SuccessPage.ejs
+│   └── TaskModal.ejs
+├── .env
+├── .gitignore
+├── package.json
+└── README.md
+```
+
+### Interaction Flow
+
+1. **Client Request**: The client (web browser) sends a request to the server.
+2. **Routing**: The request is routed to the appropriate route handler based on the URL and HTTP method.
+3. **Controller**: The route handler invokes the corresponding controller method to handle the request.
+4. **Service**: The controller interacts with the service layer to perform business logic and data manipulation.
+5. **Model**: The service layer interacts with the model to perform database operations.
+6. **View**: The controller renders the appropriate view (EJS template) and sends the response back to the client.
+
+### Example Interaction
+
+Let's walk through an example interaction for creating a new task:
+
+1. **Client Request**: The client sends a POST request to `/tasks` with the task data.
+2. **Routing**: The request is routed to the `TaskController.createTask` method.
+3. **Controller**: The `createTask` method in `TaskController` is invoked.
+4. **Service**: The `createTask` method calls the `TaskService.createTask` method to handle the business logic.
+5. **Model**: The `TaskService.createTask` method interacts with the `Task` model to save the task data to the database.
+6. **Response**: The `TaskController.createTask` method sends a JSON response back to the client with the created task data.
+
+### Database Schema
+
+The database schema for the Elysian Fade Task BoardTM is designed to store and manage tasks, subtasks, tags, users, teams, notifications, goals, and analytics. The schema is defined using Mongoose, an ODM (Object Data Modeling) library for MongoDB and Node.js.
+
+#### Task Schema
+
+```js
+const mongoose = require('mongoose');
+
+const taskSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  dueDate: { type: Date, required: true },
+  priority: { type: String, enum: ['Low', 'Medium', 'High'], required: true },
+  status: { type: String, enum: ['Pending', 'In Progress', 'Completed'], required: true },
+  category: { type: String, required: true },
+  isRecurring: { type: Boolean, default: false },
+  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  assignees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+});
+
+const Task = mongoose.model('Task', taskSchema);
+
+module.exports = Task;
+```
+
+#### User Schema
+
+```js
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['Admin', 'User'], required: true },
+  permissions: { type: [String], default: [] },
+  team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' }
+});
+
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
+```
+
+### API Documentation
+
+The Elysian Fade Task BoardTM provides a RESTful API for interacting with the application. The API endpoints are defined in the `routes` directory and handled by the corresponding controllers.
+
+#### Task API
+
+- **Create Task**
+  - **Endpoint**: `POST /tasks`
+  - **Description**: Creates a new task.
+  - **Request Body**:
+    ```json
+    {
+      "title": "Task Title",
+      "description": "Task Description",
+      "dueDate": "2023-12-31",
+      "priority": "High",
+      "status": "Pending",
+      "category": "Work",
+      "isRecurring": false,
+      "tags": ["tagId1", "tagId2"],
+      "createdBy": "userId",
+      "assignees": ["userId1", "userId2"]
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "task": {
+        "_id": "taskId",
+        "title": "Task Title",
+        "description": "Task Description",
+        "dueDate": "2023-12-31T00:00:00.000Z",
+        "priority": "High",
+        "status": "Pending",
+        "category": "Work",
+        "isRecurring": false,
+        "tags": ["tagId1", "tagId2"],
+        "createdBy": "userId",
+        "assignees": ["userId1", "userId2"],
+        "__v": 0
+      }
+    }
+    ```
+
+- **Get Tasks**
+  - **Endpoint**: `GET /tasks`
+  - **Description**: Retrieves all tasks.
+  - **Response**:
+    ```json
+    {
+      "tasks": [
+        {
+          "_id": "taskId",
+          "title": "Task Title",
+          "description": "Task Description",
+          "dueDate": "2023-12-31T00:00:00.000Z",
+          "priority": "High",
+          "status": "Pending",
+          "category": "Work",
+          "isRecurring": false,
+          "tags": ["tagId1", "tagId2"],
+          "createdBy": "userId",
+          "assignees": ["userId1", "userId2"],
+          "__v": 0
+        }
+      ]
+    }
+    ```
+
+- **Get Task by ID**
+  - **Endpoint**: `GET /tasks/:id`
+  - **Description**: Retrieves a task by its ID.
+  - **Response**:
+    ```json
+    {
+      "task": {
+        "_id": "taskId",
+        "title": "Task Title",
+        "description": "Task Description",
+        "dueDate": "2023-12-31T00:00:00.000Z",
+        "priority": "High",
+        "status": "Pending",
+        "category": "Work",
+        "isRecurring": false,
+        "tags": ["tagId1", "tagId2"],
+        "createdBy": "userId",
+        "assignees": ["userId1", "userId2"],
+        "__v": 0
+      }
+    }
+    ```
+
+- **Update Task**
+  - **Endpoint**: `PUT /tasks/:id`
+  - **Description**: Updates a task by its ID.
+  - **Request Body**:
+    ```json
+    {
+      "title": "Updated Task Title",
+      "description": "Updated Task Description",
+      "dueDate": "2023-12-31",
+      "priority": "Medium",
+      "status": "In Progress",
+      "category": "Personal",
+      "isRecurring": true,
+      "tags": ["tagId1", "tagId3"],
+      "assignees": ["userId1"]
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "task": {
+        "_id": "taskId",
+        "title": "Updated Task Title",
+        "description": "Updated Task Description",
+        "dueDate": "2023-12-31T00:00:00.000Z",
+        "priority": "Medium",
+        "status": "In Progress",
+        "category": "Personal",
+        "isRecurring": true,
+        "tags": ["tagId1", "tagId3"],
+        "createdBy": "userId",
+        "assignees": ["userId1"],
+        "__v": 0
+      }
+    }
+    ```
+
+- **Delete Task**
+  - **Endpoint**: `DELETE /tasks/:id`
+  - **Description**: Deletes a task by its ID.
+  - **Response**:
+    ```json
+    {
+      "message": "Task deleted successfully"
+    }
+    ```
+
+### Contribution Guidelines
+
+We welcome contributions to the Elysian Fade Task BoardTM project. To contribute, please follow these guidelines:
+
+1. **Fork the repository**: Click the "Fork" button at the top right corner of the repository page to create a copy of the repository in your GitHub account.
+
+2. **Clone the repository**: Clone the forked repository to your local machine.
+   ```sh
+   git clone https://github.com/yourusername/ElysianFadeTaskBoardTM.git
+   cd ElysianFadeTaskBoardTM
+   ```
+
+3. **Create a new branch**: Create a new branch for your feature or bug fix.
+   ```sh
+   git checkout -b feature/your-feature-name
+   ```
+
+4. **Make your changes**: Implement your feature or bug fix.
+
+5. **Commit your changes**: Commit your changes with a descriptive commit message.
+   ```sh
+   git add .
+   git commit -m "Add feature: your feature name"
+   ```
+
+6. **Push your changes**: Push your changes to your forked repository.
+   ```sh
+   git push origin feature/your-feature-name
+   ```
+
+7. **Create a pull request**: Open a pull request from your forked repository to the main repository. Provide a clear description of your changes and any relevant information.
+
+8. **Review and merge**: Your pull request will be reviewed by the project maintainers. Once approved, it will be merged into the main repository.
+
+Thank you for contributing to the Elysian Fade Task BoardTM project!
+
+## Testing
+
+The Elysian Fade Task BoardTM project includes a comprehensive test suite to ensure the quality and reliability of the application. The tests are organized into different categories, including unit tests, integration tests, and end-to-end tests.
+
+### Running Tests
+
+To run the tests, use the following command:
+```sh
+npm test
+```
+
+### Test Categories
+
+- **Unit Tests**: Test individual functions and methods in isolation.
+- **Integration Tests**: Test the interaction between different components of the application.
+- **End-to-End Tests**: Test the entire application from the user's perspective.
+
+### Test Coverage
+
+The test coverage report provides information about the percentage of code covered by tests. To generate a test coverage report, use the following command:
+```sh
+npm run coverage
+```
+
+The coverage report will be generated in the `coverage` directory.
+
+## Continuous Integration
+
+The Elysian Fade Task BoardTM project uses continuous integration (CI) to automatically run tests and ensure the quality of the codebase. The CI pipeline is configured to run tests on every push and pull request.
+
+### CI Configuration
+
+The CI configuration is defined in the `.github/workflows/ci.yml` file. The configuration includes the following steps:
+
+1. **Install dependencies**: Install the project dependencies using `npm install`.
+2. **Run tests**: Run the test suite using `npm test`.
+3. **Generate coverage report**: Generate the test coverage report using `npm run coverage`.
+
+### CI Status
+
+The CI status is displayed on the repository page. A green checkmark indicates that the tests have passed, while a red cross indicates that the tests have failed.
+
+## Troubleshooting
+
+If you encounter any issues while using the Elysian Fade Task BoardTM, please refer to the following troubleshooting steps:
+
+1. **Check the logs**: Check the server logs for any error messages. The logs can provide valuable information about the cause of the issue.
+
+2. **Verify environment variables**: Ensure that the environment variables are correctly set in the `.env` file.
+
+3. **Check database connection**: Verify that the MongoDB database is running and accessible. Ensure that the `MONGODB_URI` environment variable is correctly set.
+
+4. **Update dependencies**: Ensure that all project dependencies are up to date. Run `npm update` to update the dependencies.
+
+5. **Clear cache**: Clear the application cache and restart the server.
+
+6. **Consult the documentation**: Refer to the project documentation for detailed information about the application and its components.
+
+If the issue persists, please open an issue on the GitHub repository with a detailed description of the problem.
+
+## Maintenance
+
+The Elysian Fade Task BoardTM project is actively maintained by the project maintainers. Regular updates and bug fixes are released to ensure the stability and security of the application.
+
+### Maintenance Tasks
+
+- **Update dependencies**: Regularly update project dependencies to ensure compatibility and security.
+- **Fix bugs**: Address reported bugs and issues in a timely manner.
+- **Add new features**: Continuously improve the application by adding new features and enhancements.
+- **Review pull requests**: Review and merge pull requests from contributors.
+
+### End-of-Life
+
+In the event that the Elysian Fade Task BoardTM project reaches its end-of-life, the following steps will be taken:
+
+1. **Announce end-of-life**: Announce the end-of-life date to the community and provide a timeline for the transition.
+2. **Provide migration path**: Provide a migration path for users to transition to an alternative solution.
+3. **Archive repository**: Archive the GitHub repository to preserve the project history.
+
+## New Libraries to be Installed with npm
+
+The following new libraries should be installed with npm:
+
+1. **Jest**: A delightful JavaScript Testing Framework with a focus on simplicity.
+   ```sh
+   npm install --save-dev jest
+   ```
+
+2. **Supertest**: A library for testing Node.js HTTP servers.
+   ```sh
+   npm install --save-dev supertest
+   ```
+
+3. **Mongoose**: An ODM (Object Data Modeling) library for MongoDB and Node.js.
+   ```sh
+   npm install mongoose
+   ```
+
+4. **Bcryptjs**: A library to help you hash passwords.
+   ```sh
+   npm install bcryptjs
+   ```
+
+5. **Dotenv**: A module that loads environment variables from a `.env` file into `process.env`.
+   ```sh
+   npm install dotenv
+   ```
+
+6. **Express**: A minimal and flexible Node.js web application framework.
+   ```sh
+   npm install express
+   ```
+
+7. **EJS**: A templating engine that allows for embedding JavaScript code into HTML templates.
+   ```sh
+   npm install ejs
+   ```
+
+8. **Nodemon**: A tool that helps develop Node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+   ```sh
+   npm install --save-dev nodemon
+   ```
+
+Thank you for using the Elysian Fade Task BoardTM!
