@@ -7,9 +7,18 @@ import teamRoutes from './routes/teamRoutes.ts';
 import notificationRoutes from './routes/notificationRoutes.ts';
 import goalRoutes from './routes/goalRoutes.ts';
 import baseRoutes from './routes/baseRoutes.ts';
+import * as dejs from 'https://deno.land/x/dejs@0.10.3/mod.ts'; 
 
 const app = new Application();
 const port: number = parseInt(env.PORT) || 8080;
+
+app.use(async (context, next) => {
+  context.render = async (view: string, data: Record<string, unknown>) => {
+    const filePath = `./views/${view}`; // Path to your views
+    context.response.body = await dejs.render(filePath, data);
+  };
+  await next();
+});
 
 // Use your routes
 app.use(taskRoutes.routes());
@@ -29,6 +38,7 @@ app.use(async (context, next) => {
 
     // Ensure the response is writable
     if (!context.response.writable) {
+      console.error("not writable");
       return;
     }
 
