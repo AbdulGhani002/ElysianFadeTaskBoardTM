@@ -1,9 +1,9 @@
 import { Router, RouterContext } from 'https://deno.land/x/oak/mod.ts';
-import * as dejs from 'https://deno.land/x/dejs@0.10.3/mod.ts';
 import { join } from 'https://deno.land/std/path/mod.ts';
+import * as dejs from 'https://deno.land/x/dejs@0.10.3/mod.ts';
 
 // Extend RouterContext to include the render method
-interface CustomContext extends RouterContext {
+interface CustomContext extends RouterContext<string, Record<string | number, string | undefined>, Record<string, any>> {
   render: (view: string, data?: Record<string, unknown>) => Promise<void>;
 }
 
